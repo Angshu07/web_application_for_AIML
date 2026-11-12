@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Artificial Intelligence &amp; Machine Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --gold:#f0c040;--cyan:#00e5ff;--white:#e8f0fe;
+  --cb:rgba(0,229,255,0.15);
+  --glass:rgba(5,8,28,0.72);
+  --glass2:rgba(5,8,28,0.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Exo 2',sans-serif;background:#000;color:var(--white);min-height:100vh;overflow-x:hidden;}
+#spaceCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(0,2,15,0.88);
+  border-bottom:1px solid rgba(0,229,255,0.12);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:60px;
+}
+.nav-logo{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;color:var(--cyan);letter-spacing:2px;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:1.5px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s;text-transform:uppercase;}
+.nav-links a:hover{color:var(--cyan);}
+@media(max-width:700px){nav{padding:0 16px;}.nav-links{gap:14px;}.nav-links a{font-size:.52rem;letter-spacing:1px;}}
+
+/* ── PAGE WRAPPER ── */
+.page-wrapper{position:relative;z-index:10;padding-top:60px;}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:80px 24px 60px;
+  background:linear-gradient(180deg,rgba(0,0,20,.7) 0%,transparent 60%,rgba(0,0,20,.4) 100%);
+}
+.hero-tag{
+  display:inline-block;font-family:'Orbitron',sans-serif;font-size:.65rem;
+  letter-spacing:4px;color:var(--cyan);border:1px solid rgba(0,229,255,.5);
+  padding:6px 20px;border-radius:30px;margin-bottom:28px;text-transform:uppercase;
+  animation:fadeDown .9s ease both;
+}
+.hero h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2rem,6vw,4.2rem);font-weight:900;
+  line-height:1.1;letter-spacing:-1px;
+  background:linear-gradient(140deg,#fff 0%,var(--cyan) 45%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:fadeDown .9s .15s ease both;margin-bottom:20px;
+}
+.hero-sub{
+  font-size:clamp(.95rem,2vw,1.15rem);color:rgba(255,255,255,.5);
+  max-width:640px;line-height:1.8;
+  animation:fadeDown .9s .3s ease both;margin-bottom:40px;
+}
+.hero-cta{
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  animation:fadeDown .9s .45s ease both;
+}
+.btn-primary{
+  font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:2px;
+  padding:12px 28px;border-radius:30px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--cyan),#0088aa);
+  color:#000;font-weight:700;text-decoration:none;transition:transform .2s,box-shadow .2s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,229,255,.3);}
+.btn-ghost{
+  font-family:'Orbitron',sans-serif;font-size:.65rem;letter-spacing:2px;
+  padding:12px 28px;border-radius:30px;border:1px solid rgba(0,229,255,.4);
+  color:var(--cyan);background:transparent;cursor:pointer;text-decoration:none;
+  transition:background .2s,border-color .2s;
+}
+.btn-ghost:hover{background:rgba(0,229,255,.08);border-color:var(--cyan);}
+.hero-scroll{margin-top:56px;animation:fadeDown .9s .6s ease both;}
+.hero-scroll span{font-family:'Orbitron',sans-serif;font-size:.55rem;letter-spacing:3px;color:rgba(255,255,255,.3);display:block;margin-bottom:10px;}
+.scroll-arrow{width:2px;height:44px;background:linear-gradient(180deg,var(--cyan),transparent);margin:0 auto;animation:scrollPulse 1.8s ease-in-out infinite;}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:translateY(-4px)}50%{opacity:1;transform:translateY(4px)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION COMMON ── */
+section{padding:80px 24px;position:relative;}
+.section-inner{max-width:1100px;margin:0 auto;}
+
+.section-eyebrow{
+  font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:4px;
+  color:var(--gold);text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-eyebrow::before{
+  content:'';display:inline-block;width:28px;height:1px;background:var(--gold);
+}
+.section-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(1.4rem,3.5vw,2.2rem);font-weight:900;
+  line-height:1.2;margin-bottom:18px;
+}
+.section-title span{color:var(--cyan);}
+.section-lead{
+  font-size:1.05rem;line-height:1.85;color:rgba(230,240,255,.65);
+  max-width:700px;margin-bottom:40px;
+}
+
+/* ── INTRO SECTION ── */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px;}
+@media(max-width:768px){.intro-grid{grid-template-columns:1fr;}}
+.intro-card{
+  background:var(--glass);border:1px solid var(--cb);
+  border-radius:16px;padding:32px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+}
+.intro-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,229,255,.1);}
+.intro-card .ic-icon{font-size:2rem;margin-bottom:16px;}
+.intro-card h3{font-family:'Orbitron',sans-serif;font-size:1rem;color:var(--cyan);margin-bottom:12px;}
+.intro-card p{font-size:.93rem;line-height:1.8;color:rgba(220,235,255,.78);}
+.intro-card .bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--gold));}
+
+/* ── FLOWCHART SECTION ── */
+.flowchart-wrap{
+  background:var(--glass);border:1px solid var(--cb);
+  border-radius:20px;padding:40px 28px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  overflow-x:auto;
+}
+.flowchart-wrap svg{display:block;margin:0 auto;}
+
+/* ── CONCEPTS SECTION ── */
+.concepts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px;}
+.concept-card{
+  background:var(--glass);border:1px solid var(--cb);
+  border-radius:14px;padding:28px 24px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.concept-card:hover{transform:translateY(-4px);box-shadow:0 10px 32px rgba(0,229,255,.1);}
+.concept-card::before{
+  content:'';position:absolute;top:0;left:0;
+  width:100%;height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--gold));
+}
+.concept-card .cc-num{
+  font-family:'Orbitron',sans-serif;font-size:2.2rem;
+  font-weight:900;color:rgba(0,229,255,.1);
+  position:absolute;top:16px;right:20px;line-height:1;
+}
+.concept-card h3{font-family:'Orbitron',sans-serif;font-size:.85rem;color:var(--cyan);margin-bottom:14px;letter-spacing:.5px;}
+.concept-card p{font-size:.91rem;line-height:1.78;color:rgba(215,230,255,.75);}
+
+/* ── IMPORTANCE SECTION ── */
+.importance-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:start;}
+@media(max-width:768px){.importance-layout{grid-template-columns:1fr;}}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.stat-box{
+  background:var(--glass2);border:1px solid var(--cb);
+  border-radius:14px;padding:24px 18px;text-align:center;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .3s;
+}
+.stat-box:hover{transform:translateY(-3px);}
+.stat-box .stat-num{
+  font-family:'Orbitron',sans-serif;font-size:1.8rem;
+  font-weight:900;color:var(--cyan);line-height:1;margin-bottom:8px;
+}
+.stat-box .stat-label{font-size:.8rem;color:rgba(200,220,255,.6);line-height:1.4;}
+.importance-text p{
+  font-size:.97rem;line-height:1.85;color:rgba(225,238,255,.75);margin-bottom:18px;
+}
+.highlight-pill{
+  display:inline-block;background:rgba(0,229,255,.06);
+  border:1px solid rgba(0,229,255,.2);border-radius:8px;
+  padding:14px 20px;margin-top:8px;
+  font-size:.92rem;line-height:1.7;color:rgba(200,228,255,.85);
+}
+
+/* ── APPLICATIONS SECTION ── */
+.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:900px){.app-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:580px){.app-grid{grid-template-columns:1fr;}}
+.app-card{
+  background:var(--glass);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:26px 22px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.app-card:hover{transform:translateY(-4px);border-color:rgba(0,229,255,.25);box-shadow:0 10px 30px rgba(0,229,255,.08);}
+.app-card .app-icon{font-size:1.6rem;margin-bottom:14px;}
+.app-card h3{font-family:'Orbitron',sans-serif;font-size:.8rem;color:var(--gold);margin-bottom:12px;letter-spacing:.5px;}
+.app-card p{font-size:.88rem;line-height:1.72;color:rgba(210,228,255,.72);}
+.app-card .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+.app-tag{font-size:.62rem;padding:3px 10px;border-radius:12px;border:1px solid rgba(0,229,255,.2);color:rgba(0,229,255,.8);}
+
+/* ── ETHICS SECTION ── */
+.ethics-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:700px){.ethics-grid{grid-template-columns:1fr;}}
+.ethics-card{
+  background:var(--glass);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:28px 24px;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  position:relative;overflow:hidden;
+  transition:transform .3s;
+}
+.ethics-card:hover{transform:translateY(-4px);}
+.ethics-card::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:100%;height:2px;
+  background:linear-gradient(90deg,rgba(240,192,64,.4),transparent);
+}
+.ethics-card h3{
+  font-family:'Orbitron',sans-serif;font-size:.82rem;
+  color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px;
+}
+.ethics-card p{font-size:.9rem;line-height:1.78;color:rgba(215,230,255,.75);}
+
+/* ── BONUS SECTIONS ── */
+.bonus-section{
+  background:var(--glass);border:1px solid var(--cb);
+  border-radius:20px;padding:40px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  margin-bottom:30px;position:relative;overflow:hidden;
+}
+.bonus-section::before{
+  content:'';position:absolute;top:0;left:0;
+  width:100%;height:4px;
+  background:linear-gradient(90deg,var(--cyan),var(--gold),var(--cyan));
+}
+.bonus-badge{
+  display:inline-block;font-family:'Orbitron',sans-serif;font-size:.6rem;
+  letter-spacing:2px;color:var(--gold);border:1px solid rgba(240,192,64,.4);
+  padding:4px 14px;border-radius:20px;margin-bottom:18px;
+}
+.bonus-section h2{
+  font-family:'Orbitron',sans-serif;font-size:clamp(1.1rem,2.5vw,1.5rem);
+  color:var(--cyan);margin-bottom:18px;display:flex;align-items:center;gap:12px;
+}
+.bonus-section p{font-size:.97rem;line-height:1.85;color:rgba(225,238,255,.78);margin-bottom:16px;}
+.bonus-section p:last-child{margin-bottom:0;}
+.bonus-pillrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+.bonus-pill{
+  font-family:'Orbitron',sans-serif;font-size:.6rem;letter-spacing:1px;
+  padding:6px 16px;border-radius:20px;
+  border:1px solid rgba(0,229,255,.3);color:var(--cyan);
+  background:rgba(0,229,255,.04);
+}
+.two-col-bonus{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;}
+@media(max-width:640px){.two-col-bonus{grid-template-columns:1fr;}}
+.mini-box{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:18px;
+}
+.mini-box h4{font-family:'Orbitron',sans-serif;font-size:.72rem;color:var(--gold);margin-bottom:8px;}
+.mini-box p{font-size:.87rem;line-height:1.68;color:rgba(200,220,255,.72);}
+
+/* ── DIVIDER ── */
+.section-divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(0,229,255,.15),transparent);
+  margin:0;
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:10;
+  background:rgba(0,3,18,.95);
+  border-top:1px solid rgba(0,229,255,.15);
+  padding:60px 24px 40px;
+  backdrop-filter:blur(16px);
+}
+.footer-inner{max-width:900px;margin:0 auto;text-align:center;}
+.footer-eyebrow{
+  font-family:'Orbitron',sans-serif;font-size:.58rem;
+  letter-spacing:5px;color:var(--cyan);opacity:.7;
+  text-transform:uppercase;margin-bottom:28px;
+}
+.student-card{
+  display:inline-block;
+  background:rgba(5,10,35,.9);
+  border:1px solid rgba(0,229,255,.2);
+  border-radius:20px;padding:36px 52px;
+  position:relative;overflow:hidden;
+  max-width:540px;width:100%;
+}
+.student-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,229,255,.04),rgba(240,192,64,.04));
+  pointer-events:none;
+}
+.student-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:3px;background:linear-gradient(90deg,var(--cyan),var(--gold));
+}
+.avatar-ring{
+  width:68px;height:68px;border-radius:50%;
+  border:2px solid var(--cyan);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;font-size:1.9rem;
+  background:rgba(0,229,255,.06);
+  box-shadow:0 0 24px rgba(0,229,255,.18);
+}
+.s-name{font-family:'Orbitron',sans-serif;font-size:1.18rem;font-weight:700;color:#fff;margin-bottom:5px;}
+.s-dept{font-size:.85rem;color:var(--cyan);margin-bottom:22px;letter-spacing:.5px;}
+.s-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 28px;text-align:left;}
+.s-item label{
+  display:block;font-family:'Orbitron',sans-serif;font-size:.55rem;
+  letter-spacing:2px;color:rgba(0,229,255,.55);margin-bottom:3px;text-transform:uppercase;
+}
+.s-item span{font-size:.9rem;color:rgba(235,245,255,.92);font-weight:600;}
+.college-row{margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06);text-align:center;}
+.college-row label{
+  display:block;font-family:'Orbitron',sans-serif;font-size:.55rem;
+  letter-spacing:2px;color:rgba(240,192,64,.6);margin-bottom:4px;text-transform:uppercase;
+}
+.college-row span{font-size:.95rem;color:var(--gold);font-weight:600;}
+.footer-copy{margin-top:32px;font-size:.75rem;color:rgba(255,255,255,.22);letter-spacing:1px;}
+@media(max-width:500px){.student-card{padding:26px 20px;}.s-grid{grid-template-columns:1fr;}}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<canvas id="spaceCanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AI &amp; ML</div>
+  <ul class="nav-links">
+    <li><a href="#intro">Intro</a></li>
+    <li><a href="#concepts">Concepts</a></li>
+    <li><a href="#importance">Importance</a></li>
+    <li><a href="#applications">Applications</a></li>
+    <li><a href="#ethics">Ethics</a></li>
+    <li><a href="#safety">Safety</a></li>
+    <li><a href="#future">Future</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Artificial Intelligence<br>&amp; Machine Learning</h1>
+  <p class="hero-sub">A comprehensive academic exploration — from foundational concepts to ethical frontiers and the technologies reshaping our civilisation.</p>
+  <div class="hero-cta">
+    <a href="#intro" class="btn-primary">Explore Now</a>
+    <a href="#flowchart" class="btn-ghost">View Flowchart</a>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll to explore</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     01  INTRODUCTION
+══════════════════════════════ -->
+<section id="intro">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">01 — Introduction</div>
+      <h2 class="section-title">What is <span>Artificial Intelligence?</span></h2>
+      <p class="section-lead">AI is the simulation of human intelligence in machines — enabling them to learn, reason, and self-correct. ML is the engine driving it forward, building models from data rather than explicit rules.</p>
+    </div>
+    <div class="intro-grid reveal">
+      <div class="intro-card">
+        <div class="ic-icon">🧠</div>
+        <h3>Artificial Intelligence</h3>
+        <p>AI encompasses any technique enabling machines to mimic cognitive functions: visual perception, speech recognition, decision-making, and language understanding. Founded formally in 1956 at the Dartmouth Conference, AI has evolved through multiple cycles of optimism and "winters" to become today's most transformative technology. Modern AI systems can compose music, diagnose cancer, drive cars, and generate human-like text.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="intro-card">
+        <div class="ic-icon">⚙️</div>
+        <h3>Machine Learning</h3>
+        <p>ML is a subset of AI where algorithms improve automatically through experience. Instead of programming explicit rules, engineers feed data to ML models which learn statistical patterns. This breakthrough — pioneered by Arthur Samuel in 1959 — shifted computing from rule-based systems to data-driven intelligence. Today's large language models, recommendation engines, and fraud-detection systems are all products of ML at scale.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="intro-card">
+        <div class="ic-icon">🔬</div>
+        <h3>Deep Learning</h3>
+        <p>Deep Learning is a subfield of ML using multi-layered artificial neural networks (ANNs) loosely inspired by the human brain. With sufficient data and compute, deep networks can automatically learn hierarchical feature representations — pixels → edges → shapes → objects for images; characters → words → sentences → meaning for text. The 2012 ImageNet breakthrough by AlexNet ignited the modern deep learning era.</p>
+        <div class="bar"></div>
+      </div>
+      <div class="intro-card">
+        <div class="ic-icon">🌐</div>
+        <h3>AI vs ML vs DL</h3>
+        <p>These three terms are nested subsets: <strong style="color:var(--cyan)">AI</strong> is the broadest field (any machine intelligence), <strong style="color:var(--cyan)">ML</strong> is the dominant modern approach to building AI systems (learning from data), and <strong style="color:var(--cyan)">Deep Learning</strong> is a specific class of ML using neural networks with many layers. All deep learning is ML; all ML is AI — but not all AI requires ML, and not all ML uses deep learning.</p>
+        <div class="bar"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     FLOWCHART
+══════════════════════════════ -->
+<section id="flowchart">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">AI/ML — Flowchart</div>
+      <h2 class="section-title">Complete <span>AI &amp; ML Landscape</span></h2>
+      <p class="section-lead">From raw data to deployed intelligence — the full spectrum of AI disciplines, ML paradigms, and real-world application domains mapped in one diagram.</p>
+    </div>
+    <div class="flowchart-wrap reveal">
+      <svg width="100%" viewBox="0 0 980 920" xmlns="http://www.w3.org/2000/svg" style="font-family:'Exo 2',sans-serif;min-width:680px;">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- ROOT: Artificial Intelligence -->
+        <rect x="340" y="20" width="300" height="52" rx="12" fill="rgba(0,229,255,0.12)" stroke="#00e5ff" stroke-width="1.5"/>
+        <text x="490" y="50" text-anchor="middle" dominant-baseline="central" fill="#00e5ff" font-size="15" font-weight="700" font-family="'Orbitron',sans-serif">Artificial Intelligence</text>
+
+        <!-- AI → 3 branches line -->
+        <line x1="490" y1="72" x2="490" y2="104" stroke="rgba(0,229,255,0.5)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- Branch line horizontal -->
+        <line x1="160" y1="104" x2="820" y2="104" stroke="rgba(0,229,255,0.25)" stroke-width="1"/>
+        <!-- Verticals to L2 nodes -->
+        <line x1="160" y1="104" x2="160" y2="126" stroke="rgba(0,229,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="490" y1="104" x2="490" y2="126" stroke="rgba(0,229,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="820" y1="104" x2="820" y2="126" stroke="rgba(0,229,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- L2: Rule-Based AI -->
+        <rect x="60" y="126" width="200" height="48" rx="10" fill="rgba(240,192,64,0.10)" stroke="rgba(240,192,64,0.5)" stroke-width="1"/>
+        <text x="160" y="154" text-anchor="middle" dominant-baseline="central" fill="#f0c040" font-size="12" font-weight="600">Rule-Based AI</text>
+
+        <!-- L2: Machine Learning -->
+        <rect x="375" y="126" width="230" height="48" rx="10" fill="rgba(0,229,255,0.12)" stroke="#00e5ff" stroke-width="1.5"/>
+        <text x="490" y="154" text-anchor="middle" dominant-baseline="central" fill="#00e5ff" font-size="13" font-weight="700">Machine Learning</text>
+
+        <!-- L2: Expert Systems -->
+        <rect x="720" y="126" width="200" height="48" rx="10" fill="rgba(240,192,64,0.10)" stroke="rgba(240,192,64,0.5)" stroke-width="1"/>
+        <text x="820" y="154" text-anchor="middle" dominant-baseline="central" fill="#f0c040" font-size="12" font-weight="600">Expert Systems</text>
+
+        <!-- ML → 3 paradigms -->
+        <line x1="490" y1="174" x2="490" y2="210" stroke="rgba(0,229,255,0.5)" stroke-width="1"/>
+        <line x1="200" y1="210" x2="780" y2="210" stroke="rgba(0,229,255,0.25)" stroke-width="1"/>
+        <line x1="200" y1="210" x2="200" y2="232" stroke="rgba(0,229,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="490" y1="210" x2="490" y2="232" stroke="rgba(0,229,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="780" y1="210" x2="780" y2="232" stroke="rgba(0,229,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- L3: Supervised -->
+        <rect x="100" y="232" width="200" height="50" rx="10" fill="rgba(93,202,165,0.1)" stroke="rgba(93,202,165,0.5)" stroke-width="1"/>
+        <text x="200" y="257" text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12" font-weight="600">Supervised Learning</text>
+
+        <!-- L3: Unsupervised -->
+        <rect x="375" y="232" width="230" height="50" rx="10" fill="rgba(93,202,165,0.1)" stroke="rgba(93,202,165,0.5)" stroke-width="1"/>
+        <text x="490" y="257" text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12" font-weight="600">Unsupervised Learning</text>
+
+        <!-- L3: Reinforcement -->
+        <rect x="680" y="232" width="200" height="50" rx="10" fill="rgba(93,202,165,0.1)" stroke="rgba(93,202,165,0.5)" stroke-width="1"/>
+        <text x="780" y="257" text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="12" font-weight="600">Reinforcement Learning</text>
+
+        <!-- Sub-arrows from each L3 -->
+        <line x1="200" y1="282" x2="200" y2="310" stroke="rgba(93,202,165,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="490" y1="282" x2="490" y2="310" stroke="rgba(93,202,165,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="780" y1="282" x2="780" y2="310" stroke="rgba(93,202,165,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- L4: Sub-types -->
+        <!-- Supervised sub -->
+        <rect x="60" y="310" width="130" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="125" y="331" text-anchor="middle" dominant-baseline="central" fill="rgba(220,235,255,0.8)" font-size="11">Classification</text>
+        <rect x="210" y="310" width="100" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="260" y="331" text-anchor="middle" dominant-baseline="central" fill="rgba(220,235,255,0.8)" font-size="11">Regression</text>
+
+        <!-- Unsupervised sub -->
+        <rect x="370" y="310" width="100" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="420" y="331" text-anchor="middle" dominant-baseline="central" fill="rgba(220,235,255,0.8)" font-size="11">Clustering</text>
+        <rect x="490" y="310" width="120" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="550" y="331" text-anchor="middle" dominant-baseline="central" fill="rgba(220,235,255,0.8)" font-size="11">Dim. Reduction</text>
+
+        <!-- Reinforcement sub -->
+        <rect x="660" y="310" width="100" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="710" y="331" text-anchor="middle" dominant-baseline="central" fill="rgba(220,235,255,0.8)" font-size="11">Policy Gradient</text>
+        <rect x="778" y="310" width="100" height="42" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+        <text x="828" y="331" text-anchor="middle" dominant-baseline="central" fill="rgba(220,235,255,0.8)" font-size="11">Q-Learning</text>
+
+        <!-- Section separator label -->
+        <line x1="40" y1="386" x2="940" y2="386" stroke="rgba(0,229,255,0.1)" stroke-width="1" stroke-dasharray="4,8"/>
+        <text x="490" y="400" text-anchor="middle" fill="rgba(0,229,255,0.45)" font-size="10" font-family="'Orbitron',sans-serif" letter-spacing="3">DEEP LEARNING ARCHITECTURE</text>
+
+        <!-- Deep Learning box -->
+        <rect x="340" y="416" width="300" height="50" rx="12" fill="rgba(200,120,255,0.12)" stroke="rgba(200,120,255,0.55)" stroke-width="1.5"/>
+        <text x="490" y="444" text-anchor="middle" dominant-baseline="central" fill="rgba(200,140,255,1)" font-size="13" font-weight="700">Deep Learning</text>
+
+        <!-- DL → 4 architecture types -->
+        <line x1="490" y1="466" x2="490" y2="496" stroke="rgba(200,120,255,0.4)" stroke-width="1"/>
+        <line x1="130" y1="496" x2="850" y2="496" stroke="rgba(200,120,255,0.2)" stroke-width="1"/>
+        <line x1="130" y1="496" x2="130" y2="516" stroke="rgba(200,120,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="370" y1="496" x2="370" y2="516" stroke="rgba(200,120,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="610" y1="496" x2="610" y2="516" stroke="rgba(200,120,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="850" y1="496" x2="850" y2="516" stroke="rgba(200,120,255,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- DL arch nodes -->
+        <rect x="42" y="516" width="176" height="46" rx="9" fill="rgba(200,120,255,0.08)" stroke="rgba(200,120,255,0.4)" stroke-width="0.8"/>
+        <text x="130" y="539" text-anchor="middle" dominant-baseline="central" fill="rgba(210,160,255,0.95)" font-size="11" font-weight="600">CNN</text>
+        <text x="130" y="553" text-anchor="middle" dominant-baseline="central" fill="rgba(180,140,220,0.7)" font-size="10">Convolutional</text>
+
+        <rect x="282" y="516" width="176" height="46" rx="9" fill="rgba(200,120,255,0.08)" stroke="rgba(200,120,255,0.4)" stroke-width="0.8"/>
+        <text x="370" y="539" text-anchor="middle" dominant-baseline="central" fill="rgba(210,160,255,0.95)" font-size="11" font-weight="600">RNN / LSTM</text>
+        <text x="370" y="553" text-anchor="middle" dominant-baseline="central" fill="rgba(180,140,220,0.7)" font-size="10">Sequential</text>
+
+        <rect x="522" y="516" width="176" height="46" rx="9" fill="rgba(200,120,255,0.08)" stroke="rgba(200,120,255,0.4)" stroke-width="0.8"/>
+        <text x="610" y="539" text-anchor="middle" dominant-baseline="central" fill="rgba(210,160,255,0.95)" font-size="11" font-weight="600">Transformer</text>
+        <text x="610" y="553" text-anchor="middle" dominant-baseline="central" fill="rgba(180,140,220,0.7)" font-size="10">Self-Attention</text>
+
+        <rect x="762" y="516" width="176" height="46" rx="9" fill="rgba(200,120,255,0.08)" stroke="rgba(200,120,255,0.4)" stroke-width="0.8"/>
+        <text x="850" y="539" text-anchor="middle" dominant-baseline="central" fill="rgba(210,160,255,0.95)" font-size="11" font-weight="600">GAN</text>
+        <text x="850" y="553" text-anchor="middle" dominant-baseline="central" fill="rgba(180,140,220,0.7)" font-size="10">Generative</text>
+
+        <!-- Section separator label -->
+        <line x1="40" y1="596" x2="940" y2="596" stroke="rgba(0,229,255,0.1)" stroke-width="1" stroke-dasharray="4,8"/>
+        <text x="490" y="610" text-anchor="middle" fill="rgba(0,229,255,0.45)" font-size="10" font-family="'Orbitron',sans-serif" letter-spacing="3">REAL-WORLD APPLICATION DOMAINS</text>
+
+        <!-- Applications row -->
+        <line x1="490" y1="626" x2="490" y2="642" stroke="rgba(0,229,255,0.3)" stroke-width="1"/>
+        <line x1="100" y1="642" x2="880" y2="642" stroke="rgba(0,229,255,0.2)" stroke-width="1"/>
+        <line x1="100"  y1="642" x2="100"  y2="660" stroke="rgba(0,229,255,0.35)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="270"  y1="642" x2="270"  y2="660" stroke="rgba(0,229,255,0.35)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="440"  y1="642" x2="440"  y2="660" stroke="rgba(0,229,255,0.35)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="610"  y1="642" x2="610"  y2="660" stroke="rgba(0,229,255,0.35)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="780"  y1="642" x2="780"  y2="660" stroke="rgba(0,229,255,0.35)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <!-- App boxes -->
+        <rect x="38"  y="660" width="124" height="48" rx="9" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+        <text x="100" y="684" text-anchor="middle" dominant-baseline="central" fill="rgba(0,229,255,0.9)" font-size="11" font-weight="600">Healthcare</text>
+
+        <rect x="208" y="660" width="124" height="48" rx="9" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+        <text x="270" y="684" text-anchor="middle" dominant-baseline="central" fill="rgba(0,229,255,0.9)" font-size="11" font-weight="600">Finance</text>
+
+        <rect x="378" y="660" width="124" height="48" rx="9" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+        <text x="440" y="684" text-anchor="middle" dominant-baseline="central" fill="rgba(0,229,255,0.9)" font-size="11" font-weight="600">Education</text>
+
+        <rect x="548" y="660" width="124" height="48" rx="9" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+        <text x="610" y="684" text-anchor="middle" dominant-baseline="central" fill="rgba(0,229,255,0.9)" font-size="11" font-weight="600">Transport</text>
+
+        <rect x="718" y="660" width="124" height="48" rx="9" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.3)" stroke-width="0.8"/>
+        <text x="780" y="684" text-anchor="middle" dominant-baseline="central" fill="rgba(0,229,255,0.9)" font-size="11" font-weight="600">NLP / LLMs</text>
+
+        <!-- Section separator label -->
+        <line x1="40" y1="748" x2="940" y2="748" stroke="rgba(240,192,64,0.12)" stroke-width="1" stroke-dasharray="4,8"/>
+        <text x="490" y="762" text-anchor="middle" fill="rgba(240,192,64,0.45)" font-size="10" font-family="'Orbitron',sans-serif" letter-spacing="3">ETHICAL &amp; FUTURE DIMENSIONS</text>
+
+        <!-- Ethics row -->
+        <line x1="285" y1="778" x2="695" y2="778" stroke="rgba(240,192,64,0.2)" stroke-width="1"/>
+        <line x1="285" y1="778" x2="285" y2="796" stroke="rgba(240,192,64,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="490" y1="778" x2="490" y2="796" stroke="rgba(240,192,64,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="695" y1="778" x2="695" y2="796" stroke="rgba(240,192,64,0.4)" stroke-width="1" marker-end="url(#arr)"/>
+
+        <rect x="178" y="796" width="214" height="48" rx="9" fill="rgba(240,192,64,0.07)" stroke="rgba(240,192,64,0.35)" stroke-width="0.8"/>
+        <text x="285" y="820" text-anchor="middle" dominant-baseline="central" fill="rgba(240,192,64,0.9)" font-size="11" font-weight="600">Bias &amp; Fairness</text>
+
+        <rect x="383" y="796" width="214" height="48" rx="9" fill="rgba(240,192,64,0.07)" stroke="rgba(240,192,64,0.35)" stroke-width="0.8"/>
+        <text x="490" y="820" text-anchor="middle" dominant-baseline="central" fill="rgba(240,192,64,0.9)" font-size="11" font-weight="600">AI Safety &amp; Alignment</text>
+
+        <rect x="588" y="796" width="214" height="48" rx="9" fill="rgba(240,192,64,0.07)" stroke="rgba(240,192,64,0.35)" stroke-width="0.8"/>
+        <text x="695" y="820" text-anchor="middle" dominant-baseline="central" fill="rgba(240,192,64,0.9)" font-size="11" font-weight="600">AGI &amp; Future</text>
+
+        <!-- Final convergence arrow -->
+        <line x1="490" y1="844" x2="490" y2="876" stroke="rgba(0,229,255,0.35)" stroke-width="1" marker-end="url(#arr)"/>
+        <rect x="340" y="876" width="300" height="40" rx="10" fill="rgba(0,229,255,0.08)" stroke="rgba(0,229,255,0.4)" stroke-width="1.2"/>
+        <text x="490" y="898" text-anchor="middle" dominant-baseline="central" fill="rgba(0,229,255,0.95)" font-size="12" font-weight="700" font-family="'Orbitron',sans-serif">Beneficial AI for Humanity</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     02  BASIC CONCEPTS
+══════════════════════════════ -->
+<section id="concepts">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">02 — Basic Concepts</div>
+      <h2 class="section-title">Core <span>Paradigms &amp; Techniques</span></h2>
+      <p class="section-lead">The foundational building blocks of all modern AI systems — understanding these unlocks how every application from Netflix recommendations to ChatGPT actually works.</p>
+    </div>
+    <div class="concepts-grid">
+
+      <div class="concept-card reveal">
+        <div class="cc-num">01</div>
+        <h3>Supervised Learning</h3>
+        <p>The model learns a mapping function from labelled input-output pairs. A classifier trained on 10,000 labelled chest X-rays learns to flag pneumonia. Algorithms include Decision Trees, SVM, k-NN, Logistic Regression, and modern neural networks. The key challenge is obtaining high-quality labelled data at scale.</p>
+      </div>
+
+      <div class="concept-card reveal">
+        <div class="cc-num">02</div>
+        <h3>Unsupervised Learning</h3>
+        <p>The algorithm discovers hidden structure in unlabelled data. K-Means Clustering groups customers by purchase behaviour. PCA (Principal Component Analysis) reduces dimensionality while preserving variance. Autoencoders compress and reconstruct data to learn latent representations. No teacher is needed — the algorithm finds its own signal.</p>
+      </div>
+
+      <div class="concept-card reveal">
+        <div class="cc-num">03</div>
+        <h3>Reinforcement Learning</h3>
+        <p>An agent interacts with an environment, taking actions and receiving scalar rewards. Through millions of trial-and-error episodes, the agent learns a policy maximising cumulative reward. DeepMind's AlphaGo and AlphaZero mastered games at superhuman level this way. Applications include robotics, trading, ad bidding, and autonomous driving.</p>
+      </div>
+
+      <div class="concept-card reveal">
+        <div class="cc-num">04</div>
+        <h3>Neural Networks</h3>
+        <p>Composed of interconnected layers of artificial neurons with learnable weights, NNs transform inputs through nonlinear activations. Backpropagation and gradient descent tune weights to minimise prediction error. Modern architectures — CNNs for images, Transformers for language — have proven universally capable function approximators given sufficient scale.</p>
+      </div>
+
+      <div class="concept-card reveal">
+        <div class="cc-num">05</div>
+        <h3>Transformers &amp; Attention</h3>
+        <p>Introduced in 2017's "Attention Is All You Need" paper, Transformers process sequences by computing pairwise attention weights between every token. This allows parallel processing and long-range dependency capture. GPT-4, Claude, Gemini, and virtually every modern LLM is a Transformer. The architecture also dominates computer vision (ViTs) and protein folding (AlphaFold).</p>
+      </div>
+
+      <div class="concept-card reveal">
+        <div class="cc-num">06</div>
+        <h3>Overfitting &amp; Generalisation</h3>
+        <p>A model that memorises training data but performs poorly on new data has overfit. Regularisation techniques (Dropout, L1/L2 penalties, early stopping), cross-validation, data augmentation, and larger datasets combat overfitting. The bias-variance tradeoff governs the fundamental tension between model complexity and generalisation — the central challenge of ML practice.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     03  IMPORTANCE
+══════════════════════════════ -->
+<section id="importance">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">03 — Importance</div>
+      <h2 class="section-title">Why AI &amp; ML <span>Matter Today</span></h2>
+      <p class="section-lead">We are living through the most consequential technological shift since the Industrial Revolution. AI's impact is measured in lives saved, problems solved, and entirely new categories of human capability.</p>
+    </div>
+    <div class="importance-layout">
+      <div class="stat-grid reveal">
+        <div class="stat-box">
+          <div class="stat-num">$500B+</div>
+          <div class="stat-label">Global AI market value in 2024</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">40%</div>
+          <div class="stat-label">Accuracy gain with human-AI diagnostic collaboration</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">300M</div>
+          <div class="stat-label">Jobs expected to be augmented by AI by 2030</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1000×</div>
+          <div class="stat-label">Drug discovery acceleration using AlphaFold</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">96%</div>
+          <div class="stat-label">Accuracy of AI skin cancer detection vs 86.6% for dermatologists</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$15T</div>
+          <div class="stat-label">Projected AI contribution to global GDP by 2030 (PwC)</div>
+        </div>
+      </div>
+      <div class="importance-text reveal">
+        <p>AI is not just another software tool — it is a <strong style="color:var(--cyan)">general-purpose technology</strong> like electricity or the internet, capable of transforming productivity across every sector simultaneously. Nations and organisations investing in AI capabilities today are building compounding advantages that will define competitive landscapes for generations.</p>
+        <p>The democratisation of AI is equally significant. Cloud-hosted foundation models now give a solo developer access to capabilities that required a supercomputer five years ago. This lowers barriers for startups in developing nations, enables personalised healthcare in underserved communities, and puts expert-level tutoring within reach of every student on Earth.</p>
+        <p>Perhaps most importantly, AI accelerates science itself. AlphaFold predicted the structure of every known protein — a 50-year biological challenge solved in months. AI-assisted materials discovery, climate modelling, and drug synthesis are compressing research timelines that once spanned decades into years or months.</p>
+        <div class="highlight-pill">
+          🚀 <strong>Core insight:</strong> AI's value is not just automation — it is <em>augmentation</em>. A radiologist with AI outperforms both the radiologist alone and the AI alone. The human-AI collaborative model defines the next era of every professional field.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     04  APPLICATIONS
+══════════════════════════════ -->
+<section id="applications">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">04 — Applications</div>
+      <h2 class="section-title">Real-World <span>Impact Domains</span></h2>
+      <p class="section-lead">AI and ML are embedded in virtually every industry — from the diagnostics saving lives to the recommendation engines shaping culture.</p>
+    </div>
+    <div class="app-grid">
+
+      <div class="app-card reveal">
+        <div class="app-icon">🏥</div>
+        <h3>Healthcare &amp; Medicine</h3>
+        <p>AI reads medical images with dermatologist-level accuracy, accelerates drug discovery through molecular simulations, personalises treatment plans using patient genomics, and powers surgical robots with superhuman precision. AlphaFold's protein structure predictions are reshaping drug development timelines from years to months.</p>
+        <div class="app-tags"><span class="app-tag">Diagnostics</span><span class="app-tag">Drug Discovery</span><span class="app-tag">Genomics</span></div>
+      </div>
+
+      <div class="app-card reveal">
+        <div class="app-icon">🏦</div>
+        <h3>Finance &amp; Banking</h3>
+        <p>Real-time fraud detection systems process millions of transactions per second, flagging anomalies in under 100ms. Algorithmic trading accounts for over 70% of US equity volume. Credit scoring models using alternative data expand financial access to the unbanked. Robo-advisors manage trillions in assets at a fraction of the cost of human advisors.</p>
+        <div class="app-tags"><span class="app-tag">Fraud Detection</span><span class="app-tag">Algo Trading</span><span class="app-tag">Credit Scoring</span></div>
+      </div>
+
+      <div class="app-card reveal">
+        <div class="app-icon">🚗</div>
+        <h3>Autonomous Transport</h3>
+        <p>Self-driving systems fuse LIDAR, camera, and radar streams through perception networks to navigate complex environments. Tesla's FSD, Waymo's robotaxis, and autonomous freight trucks are moving from experiment to commercial deployment. AI-optimised traffic signals reduce congestion by 25% in pilot cities. Route optimisation saves billions in logistics annually.</p>
+        <div class="app-tags"><span class="app-tag">Self-Driving</span><span class="app-tag">Traffic AI</span><span class="app-tag">Fleet Management</span></div>
+      </div>
+
+      <div class="app-card reveal">
+        <div class="app-icon">🎓</div>
+        <h3>Education</h3>
+        <p>Adaptive learning platforms adjust difficulty in real time based on each student's performance, providing a personalised tutor for every learner. Automated essay scoring frees teachers for higher-value interaction. Dropout risk prediction enables early interventions. AI-powered coding tutors like GitHub Copilot are reshaping how the next generation learns to build software.</p>
+        <div class="app-tags"><span class="app-tag">Adaptive Learning</span><span class="app-tag">Auto-Grading</span><span class="app-tag">Early Intervention</span></div>
+      </div>
+
+      <div class="app-card reveal">
+        <div class="app-icon">🌱</div>
+        <h3>Agriculture</h3>
+        <p>Computer vision models mounted on drones detect crop disease 10 days before visible symptoms appear. Precision irrigation systems reduce water usage by 40% using soil sensors and weather prediction. AI yield forecasting helps governments prepare food security strategies months in advance. Satellite imagery analysis monitors deforestation and illegal farming in near real-time.</p>
+        <div class="app-tags"><span class="app-tag">Precision Irrigation</span><span class="app-tag">Disease Detection</span><span class="app-tag">Yield Forecast</span></div>
+      </div>
+
+      <div class="app-card reveal">
+        <div class="app-icon">💬</div>
+        <h3>NLP &amp; Large Language Models</h3>
+        <p>Modern LLMs like GPT-4, Claude, and Gemini can reason, write code, translate between 100+ languages, and engage in nuanced dialogue at near-human quality. They power customer support, legal document analysis, scientific literature synthesis, and software engineering. Multimodal models now process images, audio, and text together, approaching general-purpose cognition.</p>
+        <div class="app-tags"><span class="app-tag">LLMs</span><span class="app-tag">Translation</span><span class="app-tag">Code Generation</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     05  ETHICS
+══════════════════════════════ -->
+<section id="ethics">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-eyebrow">05 — Ethics</div>
+      <h2 class="section-title">Ethical Concerns <span>&amp; Challenges</span></h2>
+      <p class="section-lead">The power that makes AI transformative also makes its misuse dangerous. These concerns are not theoretical — they manifest in real harms today and demand urgent, sustained attention.</p>
+    </div>
+    <div class="ethics-grid">
+
+      <div class="ethics-card reveal">
+        <h3>⚖️ Bias &amp; Discrimination</h3>
+        <p>AI systems trained on biased historical data learn to reproduce and amplify existing inequalities. COMPAS recidivism algorithms showed higher false-positive rates for Black defendants. Amazon's AI hiring tool downgraded resumes mentioning "women's". Facial recognition error rates are 34% higher for darker-skinned women than lighter-skinned men. Bias auditing, diverse training data, and fairness constraints are necessary — but not yet standard — practice.</p>
+      </div>
+
+      <div class="ethics-card reveal">
+        <h3>🔐 Privacy &amp; Surveillance</h3>
+        <p>AI systems require vast data — often personal, sensitive, and collected without meaningful consent. Facial recognition deployed in public spaces enables mass surveillance. Social media recommendation algorithms build psychological profiles used to manipulate behaviour. China's Social Credit System exemplifies the authoritarian extreme. GDPR, AI Act, and emerging national AI laws attempt to create guardrails, but enforcement lags capability.</p>
+      </div>
+
+      <div class="ethics-card reveal">
+        <h3>🤷 Accountability Gap</h3>
+        <p>When an AI system harms someone — a denied loan, a misdiagnosis, a wrongful arrest — existing legal frameworks struggle to assign responsibility. Is it the model? The data? The deploying company? The developer? The "black box" opacity of deep neural networks makes auditing decisions nearly impossible, creating a dangerous accountability vacuum that regulators are scrambling to address through explainability requirements.</p>
+      </div>
+
+      <div class="ethics-card reveal">
+        <h3>💼 Labour Disruption</h3>
+        <p>IMF estimates that AI could affect 40% of jobs globally, with advanced economies more exposed. While AI historically creates new job categories, the transition speed exceeds retraining capacity. Routine cognitive tasks — data entry, basic legal research, customer support — face near-term displacement. Without coordinated policy responses including universal reskilling programmes and updated social safety nets, the disruption risk is acute.</p>
+      </div>
+
+      <div class="ethics-card reveal">
+        <h3>🎭 Deepfakes &amp; Misinformation</h3>
+        <p>Generative AI can synthesise photorealistic video and audio of any person saying or doing anything. Political deepfakes already exist in multiple countries. AI-generated disinformation at scale threatens democratic processes, criminal trials, and social trust. Watermarking standards, provenance tracking (C2PA), and platform detection tools are emerging but face a fundamental asymmetry: generation is cheaper than detection.</p>
+      </div>
+
+      <div class="ethics-card reveal">
+        <h3>⚔️ Autonomous Weapons</h3>
+        <p>Lethal autonomous weapons systems (LAWS) that select and engage targets without human involvement are under development by multiple state actors. The UN has debated but not achieved a ban. The core concern: removing meaningful human control from life-and-death decisions violates fundamental principles of international humanitarian law. AI-enabled cyberwarfare and infrastructure attacks present equally serious risks to global security.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     06  AI SAFETY (BONUS)
+══════════════════════════════ -->
+<section id="safety">
+  <div class="section-inner">
+    <div class="bonus-section reveal">
+      <div class="bonus-badge">✦ BONUS TOPIC — 06</div>
+      <h2>🛡️ AI Safety &amp; Value Alignment</h2>
+      <p>As AI systems grow more capable, ensuring they reliably pursue goals aligned with human values becomes one of the most consequential research challenges in history. <strong style="color:var(--cyan)">AI Alignment</strong> is the field studying how to ensure advanced AI systems do what their operators and humanity actually want — even as they become more capable, autonomous, and general than their creators anticipated.</p>
+      <p>Leading researchers at Anthropic, OpenAI, DeepMind, and academic institutions have identified a fundamental risk: a sufficiently capable AI optimising for a misspecified objective could cause catastrophic harm — not out of malice, but through indifference to values that were never properly encoded. This is the <em style="color:var(--gold)">alignment problem</em>, and it becomes more dangerous as capabilities increase.</p>
+      <div class="two-col-bonus">
+        <div class="mini-box">
+          <h4>🔍 Interpretability</h4>
+          <p>Mechanistic interpretability research tries to understand what computations occur inside neural networks — reverse-engineering "circuits" that implement specific behaviours. Anthropic's research on superposition and feature geometry is gradually mapping how concepts are stored and retrieved in large models, building toward auditable AI systems.</p>
+        </div>
+        <div class="mini-box">
+          <h4>📜 Constitutional AI</h4>
+          <p>Anthropic's Constitutional AI approach trains models to follow a set of principled guidelines using self-critique and revision. Rather than relying solely on human feedback for every edge case, the model learns to evaluate and improve its own responses against constitutional principles — scaling oversight beyond what direct human annotation enables.</p>
+        </div>
+        <div class="mini-box">
+          <h4>🔒 Robustness</h4>
+          <p>Robust AI systems behave safely even under distributional shift — when deployed in conditions that differ from training. Adversarial examples, prompt injections, and unexpected edge cases all test robustness. Red-teaming, adversarial training, and formal verification are among the techniques used to harden systems against failure modes.</p>
+        </div>
+        <div class="mini-box">
+          <h4>👁️ Scalable Oversight</h4>
+          <p>As AI capabilities approach and exceed human expert level in specific domains, humans lose the ability to directly verify AI outputs. Scalable oversight research — including debate, recursive reward modelling, and AI-assisted evaluation — develops methods for maintaining meaningful human control even when AI surpasses human performance on the evaluated task.</p>
+        </div>
+      </div>
+      <div class="highlight-pill" style="margin-top:24px;">
+        🔬 <strong>The stakes:</strong> Getting AI safety right is the most important engineering and governance challenge of the next decade. The decisions made now — about training methods, deployment constraints, and regulatory frameworks — will shape AI's trajectory for generations. This is not science fiction; it is urgent applied research.
+      </div>
+      <div class="bonus-pillrow">
+        <span class="bonus-pill">Constitutional AI</span>
+        <span class="bonus-pill">Interpretability</span>
+        <span class="bonus-pill">Red-Teaming</span>
+        <span class="bonus-pill">Scalable Oversight</span>
+        <span class="bonus-pill">RLHF</span>
+        <span class="bonus-pill">Corrigibility</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════
+     07  FUTURE FRONTIERS (BONUS)
+══════════════════════════════ -->
+<section id="future">
+  <div class="section-inner">
+    <div class="bonus-section reveal">
+      <div class="bonus-badge">✦ BONUS TOPIC — 07</div>
+      <h2>🚀 Future Frontiers of AI</h2>
+      <p><strong style="color:var(--cyan)">Artificial General Intelligence (AGI)</strong> — a system capable of performing any intellectual task a human can, with genuine flexibility, common sense, and reasoning — represents the long-term horizon of AI research. Whether AGI arrives in years, decades, or centuries — or is even possible — remains one of the most debated questions in science and philosophy. Most researchers believe systems significantly more capable than today's exist are plausible by 2035–2050.</p>
+      <p>In the near term (2–5 years), expect transformative progress across multiple fronts: <strong style="color:var(--gold)">Multimodal AI</strong> that seamlessly integrates vision, speech, text, and action; <strong style="color:var(--gold)">Agentic AI</strong> systems that plan and execute complex multi-step tasks autonomously over hours or days; and <strong style="color:var(--gold)">AI-Robotics convergence</strong> enabling systems that can manipulate the physical world with human-like dexterity.</p>
+      <div class="two-col-bonus">
+        <div class="mini-box">
+          <h4>⚛️ Quantum ML</h4>
+          <p>Quantum computers can represent and process exponentially more states than classical hardware. Quantum ML algorithms promise speedups for optimisation, sampling, and linear algebra — potentially unlocking training scales and inference speeds beyond what classical hardware can achieve. IBM, Google, and startups like IonQ are building toward the threshold of quantum advantage in ML workloads.</p>
+        </div>
+        <div class="mini-box">
+          <h4>🌍 AI Democratisation</h4>
+          <p>Open-source models (Llama, Mistral, Gemma) running on consumer hardware, edge AI on smartphones, and foundation model APIs accessible to developers worldwide are distributing AI capabilities far beyond today's centralised incumbents. This democratisation could be the most important driver of global human development in the coming decade — putting expert-level tools in the hands of a billion people who currently lack access to them.</p>
+        </div>
+        <div class="mini-box">
+          <h4>🧬 AI &amp; Science</h4>
+          <p>AI is beginning to serve as a co-scientist — formulating hypotheses, designing experiments, and synthesising literature at superhuman speed. AI-accelerated materials science could yield room-temperature superconductors, better batteries, and novel catalysts. AI-driven climate models are improving weather prediction and carbon capture research. The convergence of AI with synthetic biology could revolutionise medicine and food production.</p>
+        </div>
+        <div class="mini-box">
+          <h4>🧠 Neuromorphic &amp; Bio-Inspired AI</h4>
+          <p>Current deep learning is computationally expensive and energy-intensive — GPT-4 training consumed an estimated 50 GWh. Neuromorphic chips (Intel's Loihi, IBM's NorthPole) mimic the brain's sparse, event-driven computation, achieving orders-of-magnitude better energy efficiency. Spiking neural networks, dendritic computing, and in-memory processing represent the next frontier of efficient AI hardware.</p>
+        </div>
+      </div>
+      <div class="bonus-pillrow">
+        <span class="bonus-pill">AGI Research</span>
+        <span class="bonus-pill">Quantum ML</span>
+        <span class="bonus-pill">Neuromorphic Computing</span>
+        <span class="bonus-pill">Federated Learning</span>
+        <span class="bonus-pill">Embodied AI</span>
+        <span class="bonus-pill">Brain-Computer Interface</span>
+        <span class="bonus-pill">Foundation Models</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-eyebrow">✦ Student Details ✦</div>
+    <div class="student-card">
+      <div class="avatar-ring">👨‍💻</div>
+      <div class="s-name">Angshuman Das</div>
+      <div class="s-dept">Computer Science &amp; Technology</div>
+      <div class="s-grid">
+        <div class="s-item"><label>Semester</label><span>6th Semester</span></div>
+        <div class="s-item"><label>Year</label><span>2026</span></div>
+        <div class="s-item"><label>Registration No.</label><span>D232430814</span></div>
+        <div class="s-item"><label>Department</label><span>CST</span></div>
+      </div>
+      <div class="college-row">
+        <label>College</label>
+        <span>Babasaheb Ambedkar Government Polytechnic</span>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 · Artificial Intelligence &amp; Machine Learning · All Rights Reserved</p>
+  </div>
+</footer>
+
+</div><!-- /page-wrapper -->
+
+<!-- SPACE CANVAS -->
+<script>
+(function(){
+  var canvas=document.getElementById('spaceCanvas');
+  var ctx=canvas.getContext('2d');
+  var W,H,cx,cy;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;cx=W*.5;cy=H*.5;}
+  resize();window.addEventListener('resize',resize);
+
+  var stars=[];
+  for(var i=0;i<500;i++){
+    var layer=Math.random();
+    var sz=layer<.55?Math.random()*.8+.2:layer<.85?Math.random()*1.3+.8:Math.random()*2+1.5;
+    var spd=(sz/3.5)*.00010;
+    stars.push({x:Math.random(),y:Math.random(),r:sz,alpha:Math.random()*.55+.35,
+      ts:Math.random()*.018+.004,to:Math.random()*Math.PI*2,
+      dx:(Math.random()-.5)*spd,dy:(Math.random()-.5)*spd,
+      color:Math.random()<.12?(Math.random()<.5?'#FFE8B0':'#B0C8FF'):'#ffffff'});
+  }
+
+  var wisps=[];
+  for(var j=0;j<7;j++){
+    wisps.push({x:Math.random(),y:Math.random(),rx:Math.random()*.18+.07,ry:Math.random()*.08+.03,
+      angle:Math.random()*Math.PI,alpha:Math.random()*.065+.025,hue:Math.random()*70+190,rotSpeed:(Math.random()-.5)*.00025});
+  }
+
+  var shooters=[],lastShoot=0;
+  function spawnShooter(){shooters.push({x:Math.random()*.7,y:Math.random()*.45,len:Math.random()*.09+.04,
+    speed:Math.random()*.003+.0018,angle:Math.PI/4+(Math.random()-.5)*.35,life:0,maxLife:Math.random()*55+35});}
+
+  var stAngle=0,stSpeed=.00042,stOrbit=.115;
+  var SUN_R=34;
+  var planets=[
+    {name:'Mercury',r:5.5,orbitR:.075,speed:.0044,color:'#A8A8A8',a:.8,dark:'#606060'},
+    {name:'Venus',r:10,orbitR:.108,speed:.0033,color:'#E8C97A',a:2.1,dark:'#A0822A'},
+    {name:'Earth',r:10.5,orbitR:.143,speed:.0026,color:'#3D8EE8',a:4.5,dark:'#1A4A80',hasMoon:true,moonOrbitR:17,moonR:2.8,moonA:0,moonSpeed:.016},
+    {name:'Mars',r:7.8,orbitR:.180,speed:.0020,color:'#C1440E',a:1.3,dark:'#6B1E00'},
+    {name:'Jupiter',r:22,orbitR:.235,speed:.0013,color:'#C9956C',a:3.7,dark:'#7A4A20',hasBands:true},
+    {name:'Saturn',r:18.5,orbitR:.288,speed:.0010,color:'#E4D191',a:5.2,dark:'#8C7A30',hasRing:true},
+    {name:'Uranus',r:14,orbitR:.334,speed:.0007,color:'#7DE8E8',a:.4,dark:'#2A8080'},
+    {name:'Neptune',r:13,orbitR:.375,speed:.0005,color:'#4B70DD',a:2.8,dark:'#1A2A80'}
+  ];
+
+  function hexToRgb(h){var n=parseInt(h.replace('#',''),16);return{r:(n>>16)&255,g:(n>>8)&255,b:n&255};}
+  function shade(h,p){var c=hexToRgb(h);return'rgb('+Math.min(255,Math.max(0,c.r+p))+','+Math.min(255,Math.max(0,c.g+p))+','+Math.min(255,Math.max(0,c.b+p))+')';}
+  function hexA(h,a){var c=hexToRgb(h);return'rgba('+c.r+','+c.g+','+c.b+','+a+')';}
+
+  function drawBg(){
+    var bg=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H));
+    bg.addColorStop(0,'#080620');bg.addColorStop(.4,'#03020F');bg.addColorStop(1,'#000004');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  }
+
+  function drawWisps(){
+    wisps.forEach(function(w){
+      var px=w.x*W,py=w.y*H;
+      var g=ctx.createRadialGradient(px,py,0,px,py,w.rx*W);
+      g.addColorStop(0,'hsla('+w.hue+',65%,60%,'+w.alpha+')');g.addColorStop(1,'transparent');
+      ctx.save();ctx.translate(px,py);ctx.rotate(w.angle);ctx.scale(1,w.ry/w.rx);
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,w.rx*W,0,Math.PI*2);ctx.fill();ctx.restore();
+      w.angle+=w.rotSpeed;
+    });
+  }
+
+  function drawStars(now){
+    stars.forEach(function(s){
+      s.x+=s.dx;s.y+=s.dy;
+      if(s.x<0)s.x=1;if(s.x>1)s.x=0;if(s.y<0)s.y=1;if(s.y>1)s.y=0;
+      var tw=.5+.5*Math.sin(now*s.ts+s.to);
+      ctx.globalAlpha=s.alpha*(.45+.55*tw);
+      ctx.fillStyle=s.color;ctx.beginPath();ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);ctx.fill();
+      if(s.r>1.8){
+        ctx.globalAlpha*=.35;ctx.strokeStyle=s.color;ctx.lineWidth=.5;
+        var sp=s.r*2.8,px=s.x*W,py=s.y*H;
+        ctx.beginPath();ctx.moveTo(px-sp,py);ctx.lineTo(px+sp,py);ctx.moveTo(px,py-sp);ctx.lineTo(px,py+sp);ctx.stroke();
+      }
+    });
+    ctx.globalAlpha=1;
+  }
+
+  function drawSun(){
+    var g1=ctx.createRadialGradient(cx,cy,0,cx,cy,SUN_R*5.5);
+    g1.addColorStop(0,'rgba(255,200,50,0.22)');g1.addColorStop(.5,'rgba(255,120,0,0.06)');g1.addColorStop(1,'transparent');
+    ctx.fillStyle=g1;ctx.beginPath();ctx.arc(cx,cy,SUN_R*5.5,0,Math.PI*2);ctx.fill();
+    var g2=ctx.createRadialGradient(cx,cy,SUN_R*.6,cx,cy,SUN_R*2.2);
+    g2.addColorStop(0,'rgba(255,150,0,0.55)');g2.addColorStop(1,'transparent');
+    ctx.fillStyle=g2;ctx.beginPath();ctx.arc(cx,cy,SUN_R*2.2,0,Math.PI*2);ctx.fill();
+    var g3=ctx.createRadialGradient(cx-8,cy-8,2,cx,cy,SUN_R);
+    g3.addColorStop(0,'#FFFFF0');g3.addColorStop(.25,'#FFE566');g3.addColorStop(.65,'#FFA500');g3.addColorStop(1,'#FF4500');
+    ctx.fillStyle=g3;ctx.beginPath();ctx.arc(cx,cy,SUN_R,0,Math.PI*2);ctx.fill();
+  }
+
+  function drawOrbit(r){
+    ctx.save();ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=.6;ctx.setLineDash([3,9]);
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+  }
+
+  function drawPlanet(p,sf){
+    var orbitPx=p.orbitR*Math.min(W,H);
+    var px=cx+Math.cos(p.a)*orbitPx,py=cy+Math.sin(p.a)*orbitPx,pr=p.r*sf;
+    var ga=ctx.createRadialGradient(px,py,0,px,py,pr*3.2);
+    ga.addColorStop(0,hexA(p.color,.28));ga.addColorStop(1,'transparent');
+    ctx.fillStyle=ga;ctx.beginPath();ctx.arc(px,py,pr*3.2,0,Math.PI*2);ctx.fill();
+    if(p.hasRing){
+      ctx.save();ctx.translate(px,py);ctx.rotate(.42);ctx.scale(1,.28);
+      ctx.strokeStyle='rgba(228,209,145,0.32)';ctx.lineWidth=pr*1.1;ctx.beginPath();ctx.arc(0,0,pr*2.4,0,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle='rgba(228,209,145,0.18)';ctx.lineWidth=pr*.55;ctx.beginPath();ctx.arc(0,0,pr*3,0,Math.PI*2);ctx.stroke();ctx.restore();
+    }
+    var pg=ctx.createRadialGradient(px-pr*.32,py-pr*.32,pr*.05,px,py,pr);
+    pg.addColorStop(0,'#ffffff');pg.addColorStop(.18,p.color);pg.addColorStop(.7,p.color);pg.addColorStop(1,p.dark);
+    ctx.fillStyle=pg;ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.fill();
+    if(p.hasBands){
+      ctx.save();ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.clip();
+      ctx.globalAlpha=.12;ctx.fillStyle='#8B4513';
+      for(var k=0;k<5;k++){ctx.fillRect(px-pr,py-pr+(k*(pr*2/4.5)),pr*2,pr*.38);}ctx.restore();
+    }
+    if(p.name==='Earth'){
+      ctx.save();ctx.beginPath();ctx.arc(px,py,pr,0,Math.PI*2);ctx.clip();
+      ctx.globalAlpha=.35;ctx.fillStyle='#2ECC40';
+      ctx.beginPath();ctx.ellipse(px-pr*.2,py-pr*.1,pr*.28,pr*.38,.3,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.ellipse(px+pr*.25,py+pr*.15,pr*.22,pr*.28,.8,0,Math.PI*2);ctx.fill();
+      ctx.globalAlpha=.22;ctx.fillStyle='#ffffff';
+      ctx.beginPath();ctx.ellipse(px,py-pr*.6,pr*.55,pr*.18,.1,0,Math.PI*2);ctx.fill();ctx.restore();
+    }
+    if(p.hasRing){
+      ctx.save();ctx.translate(px,py);ctx.rotate(.42);ctx.scale(1,.28);
+      ctx.strokeStyle='rgba(228,209,145,0.15)';ctx.lineWidth=pr*1.1;
+      ctx.beginPath();ctx.arc(0,0,pr*2.4,0,Math.PI,true);ctx.stroke();ctx.restore();
+    }
+    if(p.hasMoon){
+      var mx=px+Math.cos(p.moonA)*p.moonOrbitR*sf,my=py+Math.sin(p.moonA)*p.moonOrbitR*sf;
+      var mg=ctx.createRadialGradient(mx-p.moonR*sf*.3,my-p.moonR*sf*.3,.2,mx,my,p.moonR*sf);
+      mg.addColorStop(0,'#E8E8E8');mg.addColorStop(1,'#888888');
+      ctx.fillStyle=mg;ctx.beginPath();ctx.arc(mx,my,p.moonR*sf,0,Math.PI*2);ctx.fill();
+      p.moonA+=p.moonSpeed;
+    }
+    p.a+=p.speed;
+  }
+
+  function drawStation(ang){
+    var orbitPx=stOrbit*Math.min(W,H);
+    var sx=cx+Math.cos(ang)*orbitPx,sy=cy+Math.sin(ang)*orbitPx;
+    ctx.save();ctx.translate(sx,sy);ctx.rotate(ang+Math.PI/4);
+    ctx.fillStyle='rgba(180,205,255,0.20)';ctx.strokeStyle='rgba(180,205,255,0.60)';ctx.lineWidth=.8;
+    ctx.fillRect(-5,-2,10,4);ctx.strokeRect(-5,-2,10,4);
+    ctx.fillStyle='rgba(0,200,255,0.28)';ctx.strokeStyle='rgba(0,200,255,0.50)';
+    ctx.fillRect(-11,-1,5,2);ctx.strokeRect(-11,-1,5,2);
+    ctx.fillRect(6,-1,5,2);ctx.strokeRect(6,-1,5,2);ctx.restore();
+  }
+
+  function drawShooters(){
+    for(var i=shooters.length-1;i>=0;i--){
+      var s=shooters[i];
+      var ex=s.x*W+Math.cos(s.angle)*s.len*W,ey=s.y*H+Math.sin(s.angle)*s.len*H;
+      var prog=s.life/s.maxLife;
+      var g=ctx.createLinearGradient(s.x*W,s.y*H,ex,ey);
+      g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,'rgba(255,255,255,'+(0.9*(1-prog))+')');
+      ctx.save();ctx.strokeStyle=g;ctx.lineWidth=1.3;
+      ctx.beginPath();ctx.moveTo(s.x*W,s.y*H);ctx.lineTo(ex,ey);ctx.stroke();ctx.restore();
+      s.x+=Math.cos(s.angle)*s.speed;s.y+=Math.sin(s.angle)*s.speed;s.life++;
+      if(s.life>s.maxLife)shooters.splice(i,1);
+    }
+  }
+
+  function loop(now){
+    ctx.clearRect(0,0,W,H);
+    drawBg();drawWisps();drawStars(now*.001);
+    if(now-lastShoot>2500){spawnShooter();lastShoot=now;}
+    drawShooters();
+    var scale=Math.min(W,H),sf=Math.max(.62,scale/720);
+    planets.forEach(function(p){drawOrbit(p.orbitR*scale);});
+    drawSun();
+    planets.forEach(function(p){drawPlanet(p,sf);});
+    stAngle+=stSpeed;drawStation(stAngle);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* SCROLL REVEAL */
+(function(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+})();
+</script>
+</body>
+</html>
